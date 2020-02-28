@@ -50,7 +50,7 @@ function getBaseLog(x, y) {
     return Math.log(y) / Math.log(x);
 }
 
-function getColor(e, hmax=getBaseLog(20, 0.05), hmin=getBaseLog(20, 0.00000625)) {
+function getColor(e, hmax=getBaseLog(10, 0.12), hmin=getBaseLog(20, 0.00001)) {
     if (isNaN(e)) return "#ccc";
 
     i = 255.0 * (hmax - (getBaseLog(20, e*100.0))) / (hmax - hmin);
@@ -143,7 +143,7 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0.05, 0.0024, 0.000125],
+        grades = [0.10, 0.01, 0.001, 0.0001],
         labels = [],
         from, to;
 
@@ -152,7 +152,7 @@ legend.onAdd = function (map) {
         to = grades[i + 1];
 
         labels.push(
-            '<i style="background:' + getColor(from/100.0) + '"></i> ' +
+            '<i style="background:' + getColor(from/100.0 + 0.0001/100.0) + '"></i> ' +
             from+'%');
             // + (to ? '&ndash;' + to : '+'));
     }
