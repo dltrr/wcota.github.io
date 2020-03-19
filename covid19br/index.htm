@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11286782-4"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-11286782-4');
+		</script>
+
+		<title>Monitoramento do número de casos de COVID-19 no Brasil</title>
+		<meta charset="utf-8" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+		<meta name="description" content="Números de casos confirmados de COVID-19 (Coronavírus) no Brasil.">
+		<meta name="keywords" content="Brasil,Brazil,Coronavirus,Covid-19,UFV,SARS-CoV-2">
+		<meta name="author" content="Wesley Cota">
+
+		<meta property="og:url"                content="https://labs.wesleycota.com/sarscov2/br/" />
+		<meta property="og:type"               content="website" />
+		<meta property="og:title"              content="Monitoramento do número de casos de COVID-19 no Brasil" />
+		<meta property="og:description"        content="Números de casos confirmados de COVID-19 (Coronavírus) no Brasil ao longo do tempo." />
+		<meta property="og:image"              content="https://labs.wesleycota.com/sarscov2/br/imgs/corona.jpg" />
+		
+		<!-- Favicons -->
+		<link rel="shortcut icon" href="">
+		<link href="imgs/favicon.ico" rel="icon">
+		<link href="imgs/touch-icon.png" rel="apple-touch-icon">
+
+		<!-- Plotly.js -->
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		
+		<!-- Bootstrap core CSS -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/dataTables.bootstrap.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="assets/css/main.css?v=3" />
+		<link rel="stylesheet" href="data/data.css?v=3" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="chart/chart.min.js"></script>
+		<script src="chart/utils.js"></script>
+		<style>
+		#grafico canvas{
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+		</style>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<!-- <a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Phantom</span>
+								</a> -->
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="#main">Página principal</a></li>
+							<!-- <li><a href="#mapa">Mapa</a></li> -->
+							<li><a href="#mapa">Mapa com todos os casos</a></li>
+							<li><a href="#grafico">Evolução temporal do número de casos</a></li>
+							<li><a href="#total">Tabela com casos totais por estado</a></li>
+							<li><a href="#municipio">Tabela com casos totais por município</a></li>
+							<li><a href="#estado">Tabela com evolução temporal por estado</a></li>
+							<li><a href="#fontes">Links para as fontes consultadas</a></li>
+							<li><a href="#footer">Contato</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<header>
+								<h1>Número de casos confirmados de COVID-19 no Brasil</h1>
+								<p>Inclui os dados confirmados pela <a href="http://plataforma.saude.gov.br/novocoronavirus/">plataforma oficial do Ministério da Saúde</a> e demais noticiados pela secretarias de saúde de cada estado.</p>
+								<p><b>Atenção:</b> Favor confirmar os dados diretamente com as <a href="#fontes">fontes consultadas</a> e pela <a href="http://plataforma.saude.gov.br/novocoronavirus/">plataforma oficial do Ministério da Saúde</a>!</p>
+								<p><b><i>A atualização dos dados nas tabelas e no gráfico pode sofrer um atraso de 10 minutos após cada atualização devido ao cache do servidor!</i></b></p>
+								<p><span id="maxCases"></span></p>
+							</header>
+
+							<section id="mapa">
+								<h2>Mapa com os casos por município</h2>
+								<p>Nem todos os municípios estão corretamente identificados no mapa! Confira sempre as tabelas no final da página.</p>
+								<iframe src="map/index.htm" id="map" frameborder="0" allowfullscreen></iframe>
+							</section>
+
+							<section id="grafico">
+								<h2>Evolução temporal do número de casos</h2>
+								<div class="inner">
+
+									<h3>Em escala linear:</h3>
+									<div id="plotlydiv" style="width: 100%; height: 500px;"></div>		
+									<h3>Em escala log:</h3>	
+									<div id="plotlydivlog" style="width: 100%; height: 500px;"></div>							
+									
+								</div>
+							</section>
+
+							<!-- Table -->
+							<section id="tabela">
+								<h2>Dados puros por estado e dia de notificação</h2>
+								<p>
+									Todos os casos aqui divulgados foram confirmados pelas secretarias de saúde de cada estado, e também obtidos pela plataforma oficial do Ministério da Saúde.
+									As fontes consultadas estão listadas <a href="#fontes">no final da página</a>.
+									Todos os dados estão disponíveis em formato CSV no Github: <a href="https://github.com/wcota/covid19br">github.com/wcota/covid19br</a>.
+									Caso tenha alguma dúvida, questionamento ou sugestão, <a href="#footer">entre em contato</a>.
+									<!-- <p><i>* Alguns casos de São Paulo (marcados como SP*) podem não estar corretos! Há divergência entre os confirmados pelo hospital e pela secretaria de saúde do estado de São Paulo.</i></p> -->
+								</p>
+								<p><b>Clique nos títulos a seguir para abrir as tabelas:</b></p>
+								<h3 id='total'><a href="#">Total por estado</a></h3>
+									<!-- <p class='descricao'><b>Colunas:</b> país, estado, casos estimados pelas fontes, casos confirmados pelo Ministério da Saúde e diferença entre os números</p> -->
+									<div id='totalContent'></div>
+								<h3 id='municipio'><a href="#">Total por município</a></h3>
+									<!-- <p class='descricao'><b>Colunas:</b> país, estado, cidade, casos estimados pelas fontes</p> -->
+									<div id='municipioContent'></div>
+								<h3 id='estado'><a href="#">Total por estado e dia de notificação</a></h3>
+									<!-- <p class='descricao'><b>Colunas:</b> data, país, estado, cidade, novos casos e total de casos estimados pelas fontes</p> -->
+									<div id='estadoContent'></div>
+								<h3 id='fontes'><a href="#">Fontes consultadas</a></h3>
+									<!-- <p class='descricao'><b>Colunas:</b> data de consulta e link</p> -->
+									<div id='fontesContent'></div>
+							</section>
+
+							<!-- Lists -->
+							<section>
+								<div class="inner">
+									<h2>Mais informações</h2>
+									
+										<ul class="alt">
+											<li><a href="https://deim.urv.cat/~alephsys/COVID-19/">Mapa de risco de propagação de COVID-19 por contágio comunitário na Espanha</a></li>
+											<li><a href="https://www2.dti.ufv.br/noticias/scripts/exibeNoticiaMulti.php?codNot=32190&link=corpo">Doutorando da UFV participa da criação de modelo computacional que prevê risco de incidência do coronavírus</a></li>
+											<!-- <li>Sagittis adipiscing.</li>
+											<li>Felis enim feugiat.</li> -->
+										</ul>
+									
+								</div>
+							</section>
+						</div>
+					</div>
+
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+								<a href="https://www.ufv.br" style="border: none!important;">
+									<img src="extra/ufv.png" width="300px" />
+								</a>
+							</section>
+							<section>
+								<p>
+									<b><a href="https://wcota.me/">Wesley Cota</a></b><br />
+									PhD candidate - Complex Networks/Physics<br />
+									Universidade Federal de Viçosa - Brazil<br />
+									Universidad de Zaragoza - Spain
+								</p>
+							</section>
+							<section>
+								<ul class="icons">
+									<li><a href="https://twitter.com/wlcota" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="https://github.com/wcota" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="http://wesleycota.com/" class="icon solid style2 fa-link"><span class="label">Webpage</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><li>Adapted: <a href="http://wesleycota.com/">Wesley Cota</a> <a href="https://www.ufv.br/">(UFV)</a></li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+			<!-- Placed at the end of the document so the pages load faster -->
+			<script type="text/javascript" src="js/jquery.min.js"></script>
+			<script type="text/javascript" src="js/bootstrap.min.js"></script>
+			<script type="text/javascript" src="js/jquery.csv.min.js"></script>
+			<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+			<script type="text/javascript" src="js/dataTables.bootstrap.js"></script>
+			<script type="text/javascript" src="js/csv_to_html_table.js"></script>
+
+			<script>
+				var loadJS = function(location, callback){
+
+					scriptTag = document.createElement('script');
+					scriptTag.type = "text/javascript";
+					var versionUpdate = (new Date()).getTime();
+					scriptTag.src = 'data/code.js?v='+versionUpdate;
+					scriptTag.onreadystatechange = callback;
+					scriptTag.onload = callback;
+					location.appendChild(scriptTag);
+				};
+				loadJS(document.head, console.log('OK'));
+			</script>
+
+	</body>
+</html>
