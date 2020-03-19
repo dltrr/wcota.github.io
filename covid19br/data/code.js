@@ -16,27 +16,28 @@ function runAll(_controlValue) {
    
 	function processData(allRows) {
 
-	//    console.log(allRows);
-	var x = [], y = [], xn = [], yn = [];
+		//    console.log(allRows);
+		var x = [], y = [], xn = [], yn = [];
 
-	maxval = 0;
-	valDeath = 0;
+		maxval = 0;
+		valDeath = 0;
 
-	for (var i=0; i<allRows.length; i++) {
-		row = allRows[i];
-		if (row['state'] == 'TOTAL') {
-			x.push( row['date'] );
-			y.push( row['totalCases'] );
-			xn.push( row['date'] );
-			yn.push( row['newCases'] );
-			maxval = Math.max(row['totalCases'], maxval);
+		for (var i=0; i<allRows.length; i++) {
+			row = allRows[i];
+			if (row['state'] == 'TOTAL') {
+				x.push( row['date'] );
+				y.push( row['totalCases'] );
+				xn.push( row['date'] );
+				yn.push( row['newCases'] );
+				maxval = Math.max(row['totalCases'], maxval);
+			};
 		};
-	};
-	//console.log(maxval);
-	document.getElementById("maxCases").innerHTML = '<b><u>Total de casos: '+maxval+'</u> ('+_controlValue+' são mortes)</b>';
-	//    console.log( 'X',x, 'Y',y );
-	makePlotly( x, y, xn, yn);
-	makePlotlylog( x, y, xn, yn);
+		//console.log(maxval);
+		var diferenca = parseInt(maxval) - parseInt(_controlValue);
+		document.getElementById("maxCases").innerHTML = '<b><u>Total de casos: '+maxval+'</u> ('+ diferenca + ' + ' + _controlValue + ' mortes)</b>';
+		//    console.log( 'X',x, 'Y',y );
+		makePlotly( x, y, xn, yn);
+		makePlotlylog( x, y, xn, yn);
 	}
 
 	function makePlotly( x, y, xn, yn){
