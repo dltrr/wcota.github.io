@@ -34,7 +34,8 @@ function runAll(_controlValue) {
 		};
 		//console.log(maxval);
 		var diferenca = parseInt(maxval) - parseInt(_controlValue);
-		document.getElementById("maxCases").innerHTML = '<b><u>Total de casos: '+maxval+'</u> ('+ diferenca + ' + ' + _controlValue + ' mortes)</b>';
+		document.getElementById("maxCases").innerHTML = '<b><u>Total de casos: '+maxval+'</u> ('+ _controlValue + ' mortes*)</b>';
+		// document.getElementById("maxCases").innerHTML = '<b><u>Total de casos: '+maxval+'</u> ('+ diferenca + ' + ' + _controlValue + ' mortes)</b>';
 		//    console.log( 'X',x, 'Y',y );
 		makePlotly( x, y, xn, yn);
 		makePlotlylog( x, y, xn, yn);
@@ -274,9 +275,9 @@ function runAll(_controlValue) {
 					{ "visible": false, "targets" : 0 },
 					{ "title": 'Estado', "targets" : 1 },
 					{ "title": 'Total', "targets" : 2 },
-					{ "title": 'Ministério da Saúde', "targets" : 3 },
-					{ "title": 'Diferença', "targets" : 4 },
-					{ "title": 'Mortes', "targets" : 5 }
+					{ "title": 'Ministério da Saúde (MS)*', "targets" : 3 },
+					{ "title": 'Diferença*', "targets" : 4 },
+					{ "title": 'Mortes (MS)*', "targets" : 5 }
 				]
 					
 				},
